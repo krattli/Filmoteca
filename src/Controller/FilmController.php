@@ -80,17 +80,66 @@ class FilmController
         dd($film);
     }
 
-    public function update()
-    {
-        echo "Mise à jour d'un film";
-    }
-
-    public function deleteById()
+    public function edit(array $queryParams)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idASupp = $_POST['id'];
+            // Récupérer les données du formulaire de modification
+            $id = (int) $_POST['id'];
+            $data = [
+                'id' => (int) $_POST['id'] ?? null,
+                'title' => $_POST['title'] ?? null,
+                'year' => $_POST['year'] ?? null,
+                'type' => $_POST['type'] ?? null,
+                'synopsis' => $_POST['synopsis'] ?? null,
+                'director' => $_POST['director'] ?? null,
+            ];
 
+            $entityMapper = new EntityMapper();
+            $film = $entityMapper->mapToEntity($data, Film::class);
+
+            $filmRepository = new FilmRepository();
+            $filmRepository->update($film);
+
+            header('Location: /film/list');
+            exit;
+        } else {
+            echo $this->renderer->render('film/edit.html.twig');
         }
-        echo "Suppression d'un film";
+    }
+
+    public function searchByID(array $queryParams)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filmId'])) {
+            $filmId = (int) $_POST['filmId'];
+
+            $filmRepository = new FilmRepository();
+            $film = $filmRepository->find($filmId);
+
+            if ($film) {
+                echo $this->renderer->render('film/edit.html.twig', [
+                    'film' => $film,
+                ]);
+            } else {
+                echo "Aucun film trouvé avec cet ID.";
+            }
+        } else {
+            echo $this->renderer->render('film/edit.html.twig');
+        }
+    }
+
+    public function delete(array $queryParams)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            // Récupérer l'ID du film à supprimer
+            $filmId = (int) $_POST['id'];
+
+            // Supprimer le film de la base de données
+            $filmRepository = new FilmRepository();
+            $filmRepository->delete($filmId);
+
+            // Rediriger vers la liste des films
+            header('Location: /film/list');
+            exit;
+        }
     }
 }

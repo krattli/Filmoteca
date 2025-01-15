@@ -71,9 +71,27 @@ class FilmRepository
         ]);
     }
 
+    public function update(Film $film): void
+    {
+        $query = "UPDATE film 
+              SET title = :title, year = :year, type = :type, synopsis = :synopsis, director = :director, updated_at = NOW() 
+              WHERE id = :id";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->execute([
+            ':id' => $film->getId(),
+            ':title' => $film->getTitle(),
+            ':year' => $film->getYear(),
+            ':type' => $film->getType(),
+            ':synopsis' => $film->getSynopsis(),
+            ':director' => $film->getDirector(),
+        ]);
+    }
+
     public function delete(int $id): void
     {
-        $requeteSQL = 'DELETE FROM film WHERE id = :id';
+        $requeteSQL = 'UPDATE film SET deleted_at = NOW() WHERE id = :id';
         $requetePreparee = $this->db->prepare($requeteSQL);
         $requetePreparee->execute([
             'id' => $id,
