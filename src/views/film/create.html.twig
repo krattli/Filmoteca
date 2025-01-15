@@ -5,31 +5,37 @@
 {% block title %}Ajouter un film{% endblock %}
 
 {% block content %}
-    <h2 class="mb-4">
-        <i class="fas fa-plus" aria-hidden="true"></i> Ajouter un film
-    </h2>
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4 mb-5 bg-white rounded animate__animated animate__fadeIn">
+            <h2 class="mb-4 text-center">
+                <i class="fas fa-plus text-primary"></i> Ajouter un film
+            </h2>
 
-    <form method="POST" action="/film/create">
-        <div class="form-group">
-            <label for="title">Titre</label>
-            <input type="text" id="title" name="title" class="form-control" required>
+            <form method="POST" action="/film/create">
+                <div class="form-group mb-3">
+                    <label for="title" class="form-label">Titre</label>
+                    <input type="text" id="title" name="title" class="form-control form-control-lg" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="year" class="form-label">Année</label>
+                    <input type="text" id="year" name="year" class="form-control form-control-lg">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="type" class="form-label">Type</label>
+                    <input type="text" id="type" name="type" class="form-control form-control-lg" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="director" class="form-label">Réalisateur</label>
+                    <input type="text" id="director" name="director" class="form-control form-control-lg">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="synopsis" class="form-label">Synopsis</label>
+                    <textarea id="synopsis" name="synopsis" class="form-control form-control-lg" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    <i class="fas fa-plus-circle"></i> Ajouter
+                </button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="year">Année</label>
-            <input type="text" id="year" name="year" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="type">Type</label>
-            <input type="text" id="type" name="type" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="director">Réalisateur</label>
-            <input type="text" id="director" name="director" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="synopsis">Synopsis</label>
-            <textarea id="synopsis" name="synopsis" class="form-control"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Ajouter</button>
-    </form>
+    </div>
 {% endblock %}
