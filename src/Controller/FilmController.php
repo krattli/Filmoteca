@@ -70,14 +70,9 @@ class FilmController
             $film->setCreatedAt(new \DateTime());
 
             $filmRepository = new FilmRepository();
-            $isCreated = $filmRepository->save($film);
+            $filmRepository->save($film);
 
-            if ($isCreated) {
-                header('Location: /film/list');
-                exit;
-            } else {
-                echo "Une erreur s'est produite lors de la création du film.";
-            }
+            header('Location: /film/list');
         } else {
             echo $this->renderer->render('film/create.html.twig');
         }

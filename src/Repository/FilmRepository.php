@@ -53,7 +53,7 @@ class FilmRepository
         return $this->entityMapperService->mapToEntity($film, Film::class);
     }
 
-    public function save(Film $film): bool //?int
+    public function save(Film $film): void
     {
         $requeteSQL = 'INSERT INTO film (title, year, type, synopsis, director, created_at,updated_at) 
                   VALUES (:title, :year, :type, :synopsis, :director, :created_at, :updated_at)';
@@ -70,7 +70,5 @@ class FilmRepository
             ':updated_at' => $film->getCreatedAt()->format('Y-m-d H:i:s'),
         ]);
 
-        //return (int) $this->db->lastInsertId();
-        return true;
     }
 }
