@@ -26,16 +26,20 @@
 
             <tbody>
                 {% for film in films %}
-                    <tr>
-                        <td>{{ film.id }}</td>
-                        <td>{{ film.title }}</td>
-                        <td>{{ film.year }}</td>
-                        <td>{{ film.type }}</td>
-                        <td>{{ film.director }}</td>
-                        <td>{{ film.synopsis }}</td>
-                        <td>{{ film.createdAt.format('d/m/Y H:i') }}</td>
-                        <td>{{ film.updatedAt.format('d/m/Y H:i') }}</td>
-                    </tr>
+                    {% if film.deletedAt is null %}
+                        <tr>
+                            <td>{{ film.id }}</td>
+                            <td>{{ film.title }}</td>
+                            <td>{{ film.year }}</td>
+                            <td>{{ film.type }}</td>
+                            <td>{{ film.director }}</td>
+                            <td>{{ film.synopsis }}</td>
+                            <td>{{ film.createdAt.format('d/m/Y H:i') }}</td>
+                            <td>{{ film.updatedAt.format('d/m/Y H:i') }}</td>
+                        </tr>
+                    {% else %}
+                        <h1>Film pas présent</h1>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
