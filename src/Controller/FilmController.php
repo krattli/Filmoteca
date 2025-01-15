@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Core\TemplateRenderer;
 use App\Entity\Film;
 use App\Repository\FilmRepository;
+use App\Service\EntityMapper;
 
 class FilmController
 {
@@ -50,24 +51,17 @@ class FilmController
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = $_POST['title'] ?? null;
-            $year = $_POST['year'] ?? null;
-            $type = $_POST['type'] ?? null;
-            $synopsis = $_POST['synopsis'] ?? null;
-            $director = $_POST['director'] ?? null;
+            $data = [
+                'title' => $_POST['title'] ?? null,
+                'year' => $_POST['year'] ?? null,
+                'type' => $_POST['type'] ?? null,
+                'synopsis' => $_POST['synopsis'] ?? null,
+                'director' => $_POST['director'] ?? null,
+                'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+            ];
 
-            if (empty($title) || empty($type)) {
-                echo "Le titre et le type sont des champs obligatoires";
-                return;
-            }
-
-            $film = new Film();
-            $film->setTitle($title);
-            $film->setYear($year);
-            $film->setType($type);
-            $film->setSynopsis($synopsis);
-            $film->setDirector($director);
-            $film->setCreatedAt(new \DateTime());
+            $entityMapper = new EntityMapper();
+            $film = $entityMapper->mapToEntity($data, Film::class);
 
             $filmRepository = new FilmRepository();
             $filmRepository->save($film);
@@ -91,8 +85,12 @@ class FilmController
         echo "Mise à jour d'un film";
     }
 
-    public function delete()
+    public function deleteById()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idASupp = $_POST['id'];
+
+        }
         echo "Suppression d'un film";
     }
 }
