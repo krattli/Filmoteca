@@ -76,10 +76,6 @@ class FilmController
         }
     }
 
-    // src/Controller/FilmController.php
-
-    // src/Controller/FilmController.php
-
     public function read(array $queryParams): void
     {
         $filmId = (int) $queryParams['id'];
