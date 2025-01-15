@@ -72,22 +72,29 @@ class FilmController
         }
     }
 
-    public function read(array $queryParams)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filmId'])) {
-            $filmId = $_POST['filmId'];
-            $filmRepository = new FilmRepository();
-            $film = $filmRepository->find($filmId);
-            echo $this->renderer->render('film/edit.html.twig', [
-                'film' => $film,
-            ]);
-        } else {
-            echo $this->renderer->render('film/list.html.twig');
-        }
-        $filmRepository = new FilmRepository();
-        $film = $filmRepository->find((int) $queryParams['id']);
+    // src/Controller/FilmController.php
 
-        dd($film);
+    // src/Controller/FilmController.php
+
+    public function read(array $queryParams): void
+    {
+        $filmId = (int) $queryParams['id'];
+
+        $filmRepository = new FilmRepository();
+        $film = $filmRepository->find($filmId);
+
+        if (!$film) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Film non trouvé']);
+            return;
+        }
+
+        $html = $this->renderer->render('film/read.html.twig', [
+            'film' => $film,
+        ]);
+
+        header('Content-Type: text/html');
+        echo $html;
     }
 
     public function edit(array $queryParams)
