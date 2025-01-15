@@ -49,7 +49,38 @@ class FilmController
 
     public function create()
     {
-        echo "Création d'un film";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = $_POST['title'] ?? null;
+            $year = $_POST['year'] ?? null;
+            $type = $_POST['type'] ?? null;
+            $synopsis = $_POST['synopsis'] ?? null;
+            $director = $_POST['director'] ?? null;
+
+            if (empty($title) || empty($type)) {
+                echo "Le titre et le type sont obligatoires.";
+                return;
+            }
+
+            $film = new Film();
+            $film->setTitle($title);
+            $film->setYear($year);
+            $film->setType($type);
+            $film->setSynopsis($synopsis);
+            $film->setDirector($director);
+            $film->setCreatedAt(new \DateTime());
+
+            $filmRepository = new FilmRepository();
+            $isCreated = $filmRepository->save($film);
+
+            if ($isCreated) {
+                header('Location: /film/list');
+                exit;
+            } else {
+                echo "Une erreur s'est produite lors de la création du film.";
+            }
+        } else {
+            echo $this->renderer->render('film/create.html.twig');
+        }
     }
 
     public function read(array $queryParams)
