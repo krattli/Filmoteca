@@ -74,6 +74,16 @@ class FilmController
 
     public function read(array $queryParams)
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filmId'])) {
+            $filmId = $_POST['filmId'];
+            $filmRepository = new FilmRepository();
+            $film = $filmRepository->find($filmId);
+            echo $this->renderer->render('film/edit.html.twig', [
+                'film' => $film,
+            ]);
+        } else {
+            echo $this->renderer->render('film/list.html.twig');
+        }
         $filmRepository = new FilmRepository();
         $film = $filmRepository->find((int) $queryParams['id']);
 
@@ -83,8 +93,6 @@ class FilmController
     public function edit(array $queryParams)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupérer les données du formulaire de modification
-            $id = (int) $_POST['id'];
             $data = [
                 'id' => (int) $_POST['id'] ?? null,
                 'title' => $_POST['title'] ?? null,
@@ -126,7 +134,6 @@ class FilmController
             echo $this->renderer->render('film/edit.html.twig');
         }
     }
-
     public function delete(array $queryParams)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {

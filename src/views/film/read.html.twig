@@ -1,0 +1,44 @@
+{# templates/film/read.html.twig #}
+
+<div class="modal fade" id="filmModal{{ filmId }}" tabindex="-1" aria-labelledby="filmModalLabel{{ filmId }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="filmModalLabel{{ filmId }}">{{ film.title }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Année :</strong> {{ film.year }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Type :</strong> {{ film.type }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Réalisateur :</strong> {{ film.director }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Synopsis :</strong>
+                                <p class="mt-2">{{ film.synopsis }}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Ajouté le :</strong> {{ film.createdAt.format('d/m/Y H:i') }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Mis à jour le :</strong> {{ film.updatedAt ? film.updatedAt.format('d/m/Y H:i') : 'Non mis à jour' }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
