@@ -57,7 +57,7 @@ class FilmController
             $director = $_POST['director'] ?? null;
 
             if (empty($title) || empty($type)) {
-                echo "Le titre et le type sont obligatoires.";
+                echo "Le titre et le type sont des champs obligatoires";
                 return;
             }
 
