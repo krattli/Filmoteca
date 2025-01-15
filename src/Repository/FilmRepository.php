@@ -70,4 +70,13 @@ class FilmRepository
             $film->getCreatedAt()->format('Y-m-d H:i:s'),
         ]);
     }
+
+    public function delete(int $id): void
+    {
+        $requeteSQL = 'DELETE FROM film WHERE id = :id';
+        $requetePreparee = $this->db->prepare($requeteSQL);
+        $requetePreparee->execute([
+            'id' => $id,
+        ]);
+    }
 }
