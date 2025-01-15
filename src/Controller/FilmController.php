@@ -64,10 +64,7 @@ class FilmController
                 'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
             ];
 
-            //dans le constructeur
             $film = $this -> entityMapper->mapToEntity($data, Film::class);
-
-            //dans le constructeur
             $this -> filmRepository->save($film);
 
             header('Location: /film/list');

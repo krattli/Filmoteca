@@ -69,6 +69,9 @@
     {% endif %}
 {% endblock %}
 
+{# le script ci-dessous est utilisé pour faire la fenêtre pop up (avec la fonction read et le fichier read.html.twig) #}
+{# J'ai utilisé chatGPT pour être honnête mais je pense avoir compris dans les grandes lignes tout ce que le code fait ici #}
+
 {% block javascripts %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -77,7 +80,6 @@
             viewButtons.forEach(button => {
                 button.addEventListener('click', function () {
                     const filmId = this.getAttribute('data-film-id');
-
                     fetch(`/film/read?id=${filmId}`)
                         .then(response => {
                             return response.text();
