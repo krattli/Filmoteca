@@ -55,20 +55,19 @@ class FilmRepository
 
     public function save(Film $film): void
     {
-        $requeteSQL = 'INSERT INTO film (title, year, type, synopsis, director, created_at,updated_at) 
-                  VALUES (:title, :year, :type, :synopsis, :director, :created_at, :updated_at)';
-        // Prépare la requête pour éviter les injections SQL
+        $requeteSQL = 'INSERT INTO film (title, year, type, synopsis, director, created_at, updated_at) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?)';
+
         $requetePreparee = $this->db->prepare($requeteSQL);
 
         $requetePreparee->execute([
-            ':title' => $film->getTitle(),
-            ':year' => $film->getYear(),
-            ':type' => $film->getType(),
-            ':synopsis' => $film->getSynopsis(),
-            ':director' => $film->getDirector(),
-            ':created_at' => $film->getCreatedAt()->format('Y-m-d H:i:s'),
-            ':updated_at' => $film->getCreatedAt()->format('Y-m-d H:i:s'),
+            $film->getTitle(),
+            $film->getYear(),
+            $film->getType(),
+            $film->getSynopsis(),
+            $film->getDirector(),
+            $film->getCreatedAt()->format('Y-m-d H:i:s'),
+            $film->getCreatedAt()->format('Y-m-d H:i:s'),
         ]);
-
     }
 }
