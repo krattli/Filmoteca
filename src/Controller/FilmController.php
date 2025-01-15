@@ -12,10 +12,14 @@ use App\Service\EntityMapper;
 class FilmController
 {
     private TemplateRenderer $renderer;
+    private FilmRepository $filmRepository;
+    private entityMapper $entityMapper;
 
     public function __construct()
     {
+        $this -> filmRepository = new FilmRepository();
         $this->renderer = new TemplateRenderer();
+        $this -> entityMapper = new EntityMapper();
     }
 
     public function list(array $queryParams)
@@ -60,11 +64,11 @@ class FilmController
                 'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
             ];
 
-            $entityMapper = new EntityMapper();
-            $film = $entityMapper->mapToEntity($data, Film::class);
+            //dans le constructeur
+            $film = $this -> entityMapper->mapToEntity($data, Film::class);
 
-            $filmRepository = new FilmRepository();
-            $filmRepository->save($film);
+            //dans le constructeur
+            $this -> filmRepository->save($film);
 
             header('Location: /film/list');
         } else {
@@ -80,8 +84,7 @@ class FilmController
     {
         $filmId = (int) $queryParams['id'];
 
-        $filmRepository = new FilmRepository();
-        $film = $filmRepository->find($filmId);
+        $film = $this -> filmRepository->find($filmId);
 
         if (!$film) {
             header('Content-Type: application/json');
@@ -109,11 +112,9 @@ class FilmController
                 'director' => $_POST['director'] ?? null,
             ];
 
-            $entityMapper = new EntityMapper();
-            $film = $entityMapper->mapToEntity($data, Film::class);
+            $film = $this -> entityMapper->mapToEntity($data, Film::class);
 
-            $filmRepository = new FilmRepository();
-            $filmRepository->update($film);
+            $this -> filmRepository->update($film);
 
             header('Location: /film/list');
             exit;
@@ -127,8 +128,7 @@ class FilmController
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filmId'])) {
             $filmId = (int) $_POST['filmId'];
 
-            $filmRepository = new FilmRepository();
-            $film = $filmRepository->find($filmId);
+            $film = $this -> filmRepository->find($filmId);
 
             if ($film) {
                 echo $this->renderer->render('film/edit.html.twig', [
@@ -144,14 +144,10 @@ class FilmController
     public function delete(array $queryParams)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-            // Récupérer l'ID du film à supprimer
             $filmId = (int) $_POST['id'];
 
-            // Supprimer le film de la base de données
-            $filmRepository = new FilmRepository();
-            $filmRepository->delete($filmId);
+            $this -> filmRepository->delete($filmId);
 
-            // Rediriger vers la liste des films
             header('Location: /film/list');
             exit;
         }
